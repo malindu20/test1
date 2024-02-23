@@ -20,8 +20,8 @@ steps:
           --allow-unauthenticated
 
 # Create a subscription to Pub/Sub topic for build notifications
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['pubsub', 'topics', 'publish', 'projects/steady-cat-401619/topics/midterm', '--message', 'Deployment completed.']
+    - name: 'gcr.io/cloud-builders/gcloud'
+      args: ['pubsub', 'topics', 'publish', 'projects/steady-cat-401619/topics/midterm', '--message', 'Deployment completed.']
  
 options:
   # Set defaultLogsBucketBehavior to REGIONAL_USER_OWNED_BUCKET
