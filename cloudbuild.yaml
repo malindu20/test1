@@ -1,10 +1,10 @@
 steps:
   # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/fyp-team-c/testmahara/nodejs-app:${COMMIT_SHA}', '.']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/fyp-team-c/testmahara/nodejs-app:$COMMIT_SHA', '.']
   # Push the Docker image to the artifact registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/fyp-team-c/testmahara/nodejs-app:${COMMIT_SHA}']
+    args: ['push', 'us-central1-docker.pkg.dev/fyp-team-c/testmahara/nodejs-app:$COMMIT_SHA']
  
   # Deploy the Docker container to Google Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -13,21 +13,18 @@ steps:
       - '-c'
       - |
         gcloud run deploy nodejs-app \
-          --image=us-central1-docker.pkg.dev/fyp-team-c/testmahara/nodejs-app:${COMMIT_SHA} \
+          --image=us-central1-docker.pkg.dev/fyp-team-c/testmahara/nodejs-app:$COMMIT_SHA \
           --platform=managed \
           --region=us-central1 \
           --port=3000 \
           --allow-unauthenticated
 
   # Create a subscription to Pub/Sub topic for build notifications
-    - name: 'gcr.io/cloud-builders/gcloud'
-      args: ['pubsub', 'topics', 'publish', 'projects/fyp-team-c/topics/mahara-midterm', '--message', 'Deployment completed.']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['pubsub', 'topics', 'publish', 'projects/fyp-team-c/topics/mahara-midterm', '--message', 'Deployment completed.']
  
 options:
-  # Set defaultLogsBucketBehavior to REGIONAL_USER_OWNED_BUCKET
-  # defaultLogsBucket: 'gs://your-build-logs-bucket' # Replace with your build logs bucket
   defaultLogsBucketBehavior: 'REGIONAL_USER_OWNED_BUCKET'
  
 images:
-# Store images in Google Artifact Registry
-  - us-central1-docker.pkg.dev/fyp-team-c/testmahara/nodejs-app:${COMMIT_SHA}
+  - us-central1-docker.pkg.dev/fyp-team-c/testmahara/nodejs-app:$COMMIT_SHA
