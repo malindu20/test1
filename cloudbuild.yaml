@@ -22,7 +22,7 @@ steps:
       - '-c'
       - |
         gcloud run deploy nodejs-app \
-          --image=us-central1-docker.pkg.dev/analog-context-413503/kevinleander/nodejs-app:${COMMIT_SHA} \
+          --image=us-central1-docker.pkg.dev/fyp-team-c/testmahara/nodejs-app:${COMMIT_SHA} \
           --platform=managed \
           --region=us-central1 \
           --port=3000 \
